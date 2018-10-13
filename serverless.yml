@@ -1,0 +1,103 @@
+service: StatsService
+frameworkVersion: ">=1.2.1 <2.0.0"
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-1
+  versionFunctions: false
+  stage: ${opt:stage, 'dev'}
+  environment:
+    ENDPOINT: ${self:custom.config.${self:provider.stage}.endpoint}
+    TABLE_NAME: ${self:custom.config.${self:provider.stage}.tableName}
+    TABLE_KEY: ${self:custom.tableKey}
+    REGION: ${self:provider.region}
+    CORS_URL: ${self:custom.config.${self:provider.stage}.CORS_URL}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:custom.config.${self:provider.stage}.tableName}"
+
+plugins:
+  - serverless-plugin-optimize
+  - serverless-offline
+  - serverless-dynamodb-local
+
+custom:
+  tableKey: courseIduserId
+  config:
+    dev:
+      endpoint: http://localhost:8000
+      tableName: dev_CourseStats
+      CORS_URL: "*"
+    test:
+      endpoint: https://dynamodb.eu-west-1.amazonaws.com
+      tableName: test_CourseStats
+      CORS_URL: "*"
+    prod:
+      endpoint: https://dynamodb.eu-west-1.amazonaws.com
+      tableName: prod_CourseStats
+      CORS_URL: "*"
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+
+package:
+  individually: true
+
+functions:
+  writeCourseStats:
+    handler: handler.writeCourseStats
+    description: Persists a session study event
+    events:
+      -
+        http:
+          path: /courses/{courseId}
+          method: post
+          cors: true
+  readCourseStats:
+    handler: handler.readCourseStats
+    description: Fetches course lifetime statistics
+    events:
+      -
+        http:
+          path: /courses/{courseId}
+          method: get
+          cors: true
+  readSessionStats:
+    handler: handler.readSessionStats
+    description: Fetches a single study session
+    events:
+      -
+        http:
+          path: /courses/{courseId}/sessions/{sessionId}
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    CourseTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: ${self:custom.tableKey}
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: ${self:custom.tableKey}
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        TableName: ${self:custom.config.${self:provider.stage}.tableName}

@@ -1,0 +1,32 @@
+instrumentation:
+  extensions:
+    - .js
+  excludes: ["**/spec/**"]
+  save-baseline: true
+  es-modules: true
+  include-all-sources: true
+    
+reporting:
+  print: detail
+  reports:
+    - lcov
+  dir: ./coverage
+  watermarks:
+    statements: [60, 80]
+    lines: [60, 80]
+    functions: [60, 80]
+    branches: [60, 80]
+
+check:
+  global:
+    statements: 80
+    lines: 80
+    branches: 80
+    functions: 80
+    excludes: []
+  each:
+    statements: 80
+    lines: 80
+    branches: 80
+    functions: 80
+    excludes: []

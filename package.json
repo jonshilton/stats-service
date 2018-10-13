@@ -1,0 +1,36 @@
+{
+  "name": "stats-service",
+  "title": "Stats Service",
+  "version": "1.0.0",
+  "description": "A service to track a user's stats for a particular course",
+  "main": "handler.js",
+  "license": "MIT",
+  "scripts": {
+    "cover": "istanbul cover jasmine JASMINE_CONFIG_PATH=spec/support/unit.conf.json -x '**/spec/**'",
+    "test": "jasmine JASMINE_CONFIG_PATH=spec/support/unit.conf.json",
+    "dev": "sls dynamodb install --stage dev && sls offline start --stage dev --noAuth",
+    "deploy": "sls deploy --stage test",
+    "deploy:prod": "sls deploy --stage prod"
+  },
+  "pre-push": {
+    "run": [
+      "test"
+    ]
+  },
+  "dependencies": {
+    "ajv": "^4.11.8"
+  },
+  "devDependencies": {
+    "aws-sdk": "2.7.13",
+    "bash-color": "0.0.4",
+    "istanbul": "^1.1.0-alpha.1",
+    "jasmine": "^2.5.3",
+    "jasmine-spec-reporter": "^4.0.0",
+    "pre-push": "^0.1.1",
+    "proxyquire": "^2.0.1",
+    "serverless-dynamodb-local": "^0.2.21",
+    "serverless-offline": "3.23.0",
+    "serverless-plugin-optimize": "^3.1.1-rc.1",
+    "serverless-scriptable-plugin": "^0.8.0"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "CourseAggregate",
+  "description": "Course aggregate record",
+  "required": [
+    "courseIduserId",
+    "courseId",
+    "userId",
+    "totalModulesStudied",
+    "averageScore",
+    "timeStudied"
+  ],
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "courseIduserId": {
+      "type": "string",
+      "description": "Combined key to identify records"
+    },
+    "courseId": {
+      "$ref": "#/definitions/UUID"
+    },
+    "userId": {
+      "$ref": "#/definitions/UUID"
+    },
+    "totalModulesStudied": {
+      "type": "integer",
+      "description": "Total number of modules studied on the course"
+    },
+    "averageScore": {
+      "type": "number",
+      "description": "Average score"
+    },
+    "timeStudied": {
+      "type": "integer",
+      "description": "Total time studied in milliseconds"
+    },
+    "sessions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": " #/definitions/SessionStudyEvent"
+      }
+    }
+  },
+  "definitions": {
+    "SessionStudyEvent": {
+      "title": "SessionStudyEvent",
+      "description": "Session study event",
+      "required": [
+        "sessionId",
+        "totalModulesStudied",
+        "averageScore",
+        "timeStudied"
+      ],
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "$ref": "#/definitions/UUID"
+        },
+        "totalModulesStudied": {
+          "type": "integer",
+          "description": "Total number of modules studied in this session"
+        },
+        "averageScore": {
+          "type": "integer",
+          "description": "Average score"
+        },
+        "timeStudied": {
+          "type": "integer",
+          "description": "Time spent studying"
+        }
+      }
+    },
+    "UUID": {
+    "description": "UUID",
+    "type": "string",
+    "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+    }
+  }
+}
