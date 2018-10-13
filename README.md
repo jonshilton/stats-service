@@ -1,6 +1,6 @@
 # Stats Service
 
-A service to track a user's stats for a particular course.
+A service to track a user's stats for a particular course. The API has been scaffolded using the serverless framework and uses DynamoDB as its datastore.
 
 ## Install
 
