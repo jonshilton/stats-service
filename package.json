@@ -21,7 +21,7 @@
     "ajv": "^4.11.8"
   },
   "devDependencies": {
-    "aws-sdk": "2.7.13",
+    "aws-sdk": "^2.334.0",
     "bash-color": "0.0.4",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.5.3",
