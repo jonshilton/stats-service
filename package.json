@@ -24,12 +24,12 @@
     "aws-sdk": "^2.334.0",
     "bash-color": "0.0.4",
     "istanbul": "^1.1.0-alpha.1",
-    "jasmine": "^2.5.3",
+    "jasmine": "^3.2.0",
     "jasmine-spec-reporter": "^4.0.0",
     "pre-push": "^0.1.1",
     "proxyquire": "^2.0.1",
     "serverless-dynamodb-local": "^0.2.21",
-    "serverless-offline": "3.23.0",
+    "serverless-offline": "3.27.0",
     "serverless-plugin-optimize": "^3.1.1-rc.1",
     "serverless-scriptable-plugin": "^0.8.0"
   }
